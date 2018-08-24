@@ -1,15 +1,14 @@
 import threading
-from collections import OrderedDict
 
 
 class ComparisonThread(threading.Thread):
-    def __init__(self, word, soundex_value, dict_of_words):
+    def __init__(self, input_word, input_soundex_value, word_from_text, word_from_text_soundex):
         threading.Thread.__init__(self)
-        self.word = word
-        self.soundex_value = soundex_value
-        self.dict_of_words = dict_of_words
-        self.soundex_result = [word]
-        self.soundex_score_from_top_four_matches = 0
+        self.input_word = input_word
+        self.input_soundex_value = input_soundex_value
+        self.word_from_text = word_from_text
+        self.word_from_text_soundex = word_from_text_soundex
+        self.soundex_score = 0
 
 # A quick note on the thought process behind it:
     # most score for exact match,
@@ -22,37 +21,30 @@ class ComparisonThread(threading.Thread):
     # However, in cases like 'as' and 'an', I decided to ignore \\
     # the last two 00s and treat
     def compare_words(self):
-        soundex_word_bucket = {}
-        for key, value in self.dict_of_words.items():
-            if key.lower() != self.word.lower():
-                if value == self.soundex_value:
-                    soundex_word_bucket[key] = 8
-                elif value[0] == self.soundex_value[0]:
-                    if value[1:2] == self.soundex_value[1:2]:
-                        if value[2] != '0':
-                            soundex_word_bucket[key] = 7
-                        else:
-                            soundex_word_bucket[key] = 2
-                    elif value[2:3] == self.soundex_value[2:3]:
-                        if value[2] != '0':
-                            soundex_word_bucket[key] = 6
-                    elif value[1] == self.soundex_value[1]:
-                        if value[3] == self.soundex_value[3]:
-                            soundex_word_bucket[key] = 5
-                        else:
-                            soundex_word_bucket[key] = 2
-                    elif value[2:3] == self.soundex_value[1:2]:
-                        soundex_word_bucket[key] = 4
-                    elif value[1:2] == self.soundex_value[2:3]:
-                        soundex_word_bucket[key] = 3
-                    elif value[2] == self.soundex_value[2]:
-                        soundex_word_bucket[key] = 1
-                    elif value[3] == self.soundex_value[3]:
-                        soundex_word_bucket[key] = 1
+        if self.word_from_text.lower() != self.input_word.lower():
+            if self.word_from_text_soundex == self.input_soundex_value:
+                    self.soundex_score = 8
+            elif self.word_from_text_soundex[0] == self.input_soundex_value[0]:
+                if self.word_from_text_soundex[1:2] == self.input_soundex_value[1:2]:
+                    if self.word_from_text_soundex[2] != '0':
+                        self.soundex_score = 7
+                    else:
+                        self.soundex_score = 2
+            elif self.word_from_text_soundex[2:3] == self.input_soundex_value[2:3]:
+                if self.word_from_text_soundex[2] != '0':
+                    self.soundex_score = 6
+            elif self.word_from_text_soundex[1] == self.input_soundex_value[1]:
+                if self.word_from_text_soundex[3] == self.input_soundex_value[3]:
+                    self.soundex_score = 5
+                else:
+                    self.soundex_score = 2
+            elif self.word_from_text_soundex[2:3] == self.input_soundex_value[1:2]:
+                    self.soundex_score = 4
+            elif self.word_from_text_soundex[1:2] == self.input_soundex_value[2:3]:
+                    self.soundex_score = 3
+            elif self.word_from_text_soundex[2] == self.input_soundex_value[2]:
+                    self.soundex_score = 1
+            elif self.word_from_text_soundex[3] == self.input_soundex_value[3]:
+                    self.soundex_score = 1
 
-        soundex_dictionary = OrderedDict(sorted(soundex_word_bucket.items(), key=lambda x: x[1], reverse=True)[:4])
-        for key, value in soundex_dictionary.items():
-            self.soundex_result.append(key)
-
-        self.soundex_score_from_top_four_matches = sum(soundex_dictionary.values())
 
