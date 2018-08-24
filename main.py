@@ -4,8 +4,8 @@ from src.soundex import Soundex
 
 def main():
     print("Hi, there!")
-    path = "C:\\Users\\nikol.petrunova\Desktop\projects\python-task\wikiLT.txt"
-    # path = input("Where is the file you want me to play with? ")
+
+    path = input("Where is the file you want me to play with? ")
     is_file = verify_file(path)
 
     while not is_file:
