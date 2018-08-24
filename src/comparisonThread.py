@@ -1,5 +1,6 @@
 import threading
 
+
 class ComparisonThread(threading.Thread):
     def __init__(self,
                  input_word,

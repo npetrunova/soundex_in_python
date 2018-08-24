@@ -2,6 +2,7 @@ import re
 from src.comparisonThread import ComparisonThread
 from collections import OrderedDict
 
+
 class Soundex:
     def __init__(self, file_content, word):
         self.file_content = file_content
