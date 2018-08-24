@@ -2,7 +2,6 @@ import re
 from src.comparisonThread import ComparisonThread
 from collections import OrderedDict
 
-
 class Soundex:
     def __init__(self, file_content, word):
         self.file_content = file_content
@@ -58,6 +57,4 @@ class Soundex:
                                           key=lambda x: x[1], reverse=True)[:5])
 
         self.top_five_words = list(top_five_words_dict.keys())
-
-
 
