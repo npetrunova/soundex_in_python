@@ -4,7 +4,7 @@ from src.soundex import Soundex
 
 def main():
     print("Hi, there!")
-    # user_input = "C:\\Users\\nikol.petrunova\Desktop\projects\python-task\wikiLT.txt lituania"
+    
     user_input = input("Please give me a path and a word separated by space: ")
     path, word = user_input.split(" ")
     is_file = verify_file(path, word.strip())
