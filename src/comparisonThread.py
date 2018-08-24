@@ -1,7 +1,12 @@
 import threading
 
 class ComparisonThread(threading.Thread):
-    def __init__(self, input_word, input_soundex_value, word_from_text, word_from_text_soundex):
+    def __init__(self,
+                 input_word,
+                 input_soundex_value,
+                 word_from_text,
+                 word_from_text_soundex):
+
         threading.Thread.__init__(self)
         self.input_word = input_word
         self.input_soundex_value = input_soundex_value
@@ -9,7 +14,7 @@ class ComparisonThread(threading.Thread):
         self.word_from_text_soundex = word_from_text_soundex
         self.soundex_score = 0
 
-# A quick note on the thought process behind it:
+    # A quick note on the thought process behind it:
     # most score for exact match,
     # this means that there are some cases where for example 'a' and 'ah'\\
     # would be exact match, same for 'the' and 'two'\\
