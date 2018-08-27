@@ -2,17 +2,8 @@ import threading
 
 
 class ComparisonThread(threading.Thread):
-    def __init__(self,
-                 input_word,
-                 input_soundex_value,
-                 word_from_text,
-                 word_from_text_soundex):
-
+    def __init__(self):
         threading.Thread.__init__(self)
-        self.input_word = input_word
-        self.input_soundex_value = input_soundex_value
-        self.word_from_text = word_from_text
-        self.word_from_text_soundex = word_from_text_soundex
         self.soundex_score = 0
 
     # A quick note on the thought process behind it:
@@ -25,31 +16,35 @@ class ComparisonThread(threading.Thread):
     # 'a' it would be best to use a stop words remover method.\\
     # However, in cases like 'as' and 'an', I decided to ignore \\
     # the last two 00s and treat
-    def compare_words(self):
-        if self.word_from_text.lower() != self.input_word.lower():
-            if self.word_from_text_soundex == self.input_soundex_value:
+    def compare_words(self,
+                      input_word,
+                      input_soundex_value,
+                      word_from_text,
+                      word_from_text_soundex):
+        if word_from_text.lower() != input_word.lower():
+            if word_from_text_soundex == input_soundex_value:
                     self.soundex_score = 8
-            elif self.word_from_text_soundex[0] == self.input_soundex_value[0]:
-                if self.word_from_text_soundex[1:2] == self.input_soundex_value[1:2]:
-                    if self.word_from_text_soundex[2] != '0':
+            elif word_from_text_soundex[0] == input_soundex_value[0]:
+                if word_from_text_soundex[1:2] == input_soundex_value[1:2]:
+                    if word_from_text_soundex[2] != '0':
                         self.soundex_score = 7
                     else:
                         self.soundex_score = 2
-            elif self.word_from_text_soundex[2:3] == self.input_soundex_value[2:3]:
-                if self.word_from_text_soundex[2] != '0':
+            elif word_from_text_soundex[2:3] == input_soundex_value[2:3]:
+                if word_from_text_soundex[2] != '0':
                     self.soundex_score = 6
-            elif self.word_from_text_soundex[1] == self.input_soundex_value[1]:
-                if self.word_from_text_soundex[3] == self.input_soundex_value[3]:
+            elif word_from_text_soundex[1] == input_soundex_value[1]:
+                if word_from_text_soundex[3] == input_soundex_value[3]:
                     self.soundex_score = 5
                 else:
                     self.soundex_score = 2
-            elif self.word_from_text_soundex[2:3] == self.input_soundex_value[1:2]:
+            elif word_from_text_soundex[2:3] == input_soundex_value[1:2]:
                     self.soundex_score = 4
-            elif self.word_from_text_soundex[1:2] == self.input_soundex_value[2:3]:
+            elif word_from_text_soundex[1:2] == input_soundex_value[2:3]:
                     self.soundex_score = 3
-            elif self.word_from_text_soundex[2] == self.input_soundex_value[2]:
+            elif word_from_text_soundex[2] == input_soundex_value[2]:
                     self.soundex_score = 1
-            elif self.word_from_text_soundex[3] == self.input_soundex_value[3]:
+            elif word_from_text_soundex[3] == input_soundex_value[3]:
                     self.soundex_score = 1
 
 

@@ -49,9 +49,9 @@ class Soundex:
     def soundex_compare(self):
         soundex_dictionary = {}
         for key, value in self.soundex_dictionary.items():
-            comparison_thread = ComparisonThread(self.word, self.soundex_of_word, key, value)
+            comparison_thread = ComparisonThread()
             comparison_thread.start()
-            comparison_thread.compare_words()
+            comparison_thread.compare_words(self.word, self.soundex_of_word, key, value)
             score = comparison_thread.soundex_score
             soundex_dictionary[key] = score
         top_five_words_dict = OrderedDict(sorted(soundex_dictionary.items(),
